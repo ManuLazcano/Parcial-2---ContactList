@@ -13,6 +13,16 @@
         android:layout_height="match_parent"
         android:padding="8dp"/>
 
+    <Button
+        android:id="@+id/btn_view_call_history"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="80dp"
+        android:textSize="16sp"
+        android:text="Ver historial de llamadas" />
+
     <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/fabAddContact"
         android:layout_width="wrap_content"

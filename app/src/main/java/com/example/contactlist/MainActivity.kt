@@ -1,5 +1,6 @@
 package com.example.contactlist
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AlertDialog
@@ -22,17 +23,24 @@ class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        // Inflar el layout de la actividad principal y el diálogo para agregar contacto
         binding = ActivityMainBinding.inflate(layoutInflater)
         dialogContactBinding = DialogContactBinding.inflate(layoutInflater)
+
+        // Configuración del AlertDialog para agregar contactos
         val alertDialogBuilder = AlertDialog.Builder(this)
         alertDialogBuilder.setView(dialogContactBinding.root)
         val alertDialog = alertDialogBuilder.create()
+
         setContentView(binding.root)
 
+        // Inicializar el ViewModel y el adaptador de la lista de contactos
         contactListViewModel = ContactListViewModel()
         contactListAdapter = ContactListAdapter(listOf())
         initRecycler()
 
+        // Observar cambios en la lista de contactos
         contactListViewModel.contactList.observe(this, Observer { contactList ->
             contactListAdapter.updateContactList(contactList)
         })
@@ -45,8 +53,14 @@ class MainActivity : AppCompatActivity() {
         }
 
         setListener(alertDialog)
+
+        binding.btnViewCallHistory.setOnClickListener {
+            val intent = Intent(this, CallHistoryActivity::class.java)
+            startActivity(intent)
+        }
     }
 
+    // Inicializa el RecyclerView con un LinearLayoutManager y asigna el adaptador
     private fun initRecycler() {
         binding.rvContacts.layoutManager = LinearLayoutManager(this)
         binding.rvContacts.adapter = contactListAdapter
@@ -66,6 +80,7 @@ class MainActivity : AppCompatActivity() {
             val name = addName()
             val phone = addPhone()
             if (name.isNotEmpty() && phone.isNotEmpty()) {
+                // Añade el nuevo contacto a través del ViewModel
                 contactListViewModel.addContact(name, phone)
                 alertDialog.dismiss()
             }
